@@ -8,52 +8,87 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // MARK: - Outlets
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var generateButton: UIButton!
-    @IBOutlet weak var changeColorButton: UIButton!
+    @IBOutlet weak var switchColorButton: UIButton!
+    
+    // MARK: - Constants and variables
+    let labelFontSize: CGFloat = 12
+    let cornerRadius: CGFloat = 5
+    let passwordLength: Int = 3
     
     var isBlack: Bool = false {
         didSet {
             if isBlack {
                 self.view.backgroundColor = .black
+                self.infoLabel.textColor = .white
             } else {
                 self.view.backgroundColor = .white
+                self.infoLabel.textColor = .black
             }
         }
     }
     
+    // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
     func setupViews() {
-        textField.isSecureTextEntry = true
-        
-        infoLabel.font = .systemFont(ofSize: 12)
-        infoLabel.text = "Нажмите, чтобы сгенерировать пароль"
-        
+        activityIndicator.isHidden = true
+        infoLabel.font = .systemFont(ofSize: labelFontSize)
+        infoLabel.text = "Нажми, чтобы сгенерировать пароль"
+        infoLabel.textColor = .black
         generateButton.backgroundColor = .systemBlue
         generateButton.tintColor = .white
-        generateButton.layer.cornerRadius = 5
-        
-        changeColorButton.backgroundColor = .systemGreen
-        changeColorButton.tintColor = .white
-        changeColorButton.layer.cornerRadius = 5
+        generateButton.layer.cornerRadius = cornerRadius
+        switchColorButton.backgroundColor = .systemGreen
+        switchColorButton.tintColor = .white
+        switchColorButton.layer.cornerRadius = cornerRadius
+        switchColorButton.isHidden = true
     }
 
+    // MARK: - Actions
     @IBAction func generateButtonPressed(_ sender: Any) {
-        textField.text = generatePassword(length: 4)
+        textField.isSecureTextEntry = true
+        textField.text = generatePassword(length: passwordLength)
+        infoLabel.text = "Пароль сгенерирован. Идет подбор..."
+        generateButton.isUserInteractionEnabled = false
+        generateButton.backgroundColor = .systemGray2
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        switchColorButton.isHidden = false
+        let backgroundQueue = OperationQueue()
+        let bruteForceOperation = BruteForceOperation(password: textField.text ?? "")
+        let mainQueue = OperationQueue.main
+        let bruteForceCompletion = BlockOperation {
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+            self.infoLabel.text = "Пароль \"\(self.textField.text ?? "")\" подобран. Попробуешь еще раз?"
+            self.textField.isSecureTextEntry = false
+            self.generateButton.isUserInteractionEnabled = true
+            self.generateButton.isSelected = false
+            self.generateButton.backgroundColor = .systemBlue
+            self.switchColorButton.isHidden = true
+        }
+        backgroundQueue.addOperation(bruteForceOperation)
+        bruteForceOperation.completionBlock = {
+            mainQueue.addOperation(bruteForceCompletion)
+        }
     }
     
     @IBAction func changeColorPressed(_ sender: Any) {
         isBlack.toggle()
     }
     
+    // MARK: - Methods
     func generatePassword(length: Int) -> String {
-        let characters = String().printable
+        let characters = String().letters + String().digits
         return String((0..<length).map { _ in characters.randomElement()! })
     }
 }
