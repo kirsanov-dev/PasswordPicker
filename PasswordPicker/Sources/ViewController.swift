@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
+
     // MARK: - Outlets
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     let cornerRadius: CGFloat = 5
     let passwordLength: Int = 3
     
+    /// Indicates if the background color of the main view is black or white.
     var isBlack: Bool = false {
         didSet {
             if isBlack {
@@ -39,6 +40,7 @@ class ViewController: UIViewController {
         setupViews()
     }
     
+    /// Setup initial parameters of views. Must be added to the body of viewDidLoad() method.
     func setupViews() {
         activityIndicator.isHidden = true
         infoLabel.font = .systemFont(ofSize: labelFontSize)
@@ -54,6 +56,9 @@ class ViewController: UIViewController {
     }
 
     // MARK: - Actions
+    
+    /// Responsible for actions after pressing generateButton button.
+    /// - Parameter sender: Standard parameter passing the source of action to the method.
     @IBAction func generateButtonPressed(_ sender: Any) {
         textField.isSecureTextEntry = true
         textField.text = generatePassword(length: passwordLength)
@@ -82,29 +87,20 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Changes background color on pressing switchColor button.
+    /// - Parameter sender: Standard parameter passing the source of action to the method.
     @IBAction func changeColorPressed(_ sender: Any) {
         isBlack.toggle()
     }
     
     // MARK: - Methods
+    
+    /// Generates random password.
+    /// - Parameter length: Length of the password.
+    /// - Returns: String that consists of random characters in a given range.
     func generatePassword(length: Int) -> String {
         let characters = String().letters + String().digits
-        return String((0..<length).map { _ in characters.randomElement()! })
-    }
-}
-
-extension String {
-    var digits: String { return "0123456789" }
-    var lowercase: String { return "abcdefghijklmnopqrstuvwxyz" }
-    var uppercase: String { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ" }
-    var punctuation: String { return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" }
-    var letters: String { return lowercase + uppercase }
-    var printable: String { return digits + letters + punctuation }
-
-    mutating func replace(at index: Int, with character: Character) {
-        var stringArray = Array(self)
-        stringArray[index] = character
-        self = String(stringArray)
+        return String((0..<length).map { _ in characters.randomElement() ?? Character("") })
     }
 }
 
