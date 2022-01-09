@@ -14,6 +14,7 @@
 		0B8557002787764B00497712 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B8556FF2787764B00497712 /* Assets.xcassets */; };
 		0B8557032787764B00497712 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B8557012787764B00497712 /* LaunchScreen.storyboard */; };
 		0B8834872788B04000BE6EEE /* BruteForceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8834862788B04000BE6EEE /* BruteForceOperation.swift */; };
+		0B88348C2789FE1800BE6EEE /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B88348B2789FE1800BE6EEE /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0B8557022787764B00497712 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B8557042787764B00497712 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B8834862788B04000BE6EEE /* BruteForceOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BruteForceOperation.swift; sourceTree = "<group>"; };
+		0B88348B2789FE1800BE6EEE /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +60,41 @@
 		0B8556F52787764800497712 /* PasswordPicker */ = {
 			isa = PBXGroup;
 			children = (
-				0B8556F62787764800497712 /* AppDelegate.swift */,
-				0B8556F82787764800497712 /* SceneDelegate.swift */,
-				0B8556FA2787764800497712 /* ViewController.swift */,
-				0B8834862788B04000BE6EEE /* BruteForceOperation.swift */,
-				0B8556FC2787764800497712 /* Main.storyboard */,
-				0B8556FF2787764B00497712 /* Assets.xcassets */,
-				0B8557012787764B00497712 /* LaunchScreen.storyboard */,
-				0B8557042787764B00497712 /* Info.plist */,
+				0B88348A2789FDB600BE6EEE /* App */,
+				0B8834882789FD8800BE6EEE /* Sources */,
+				0B8834892789FDAE00BE6EEE /* Resources */,
 			);
 			path = PasswordPicker;
+			sourceTree = "<group>";
+		};
+		0B8834882789FD8800BE6EEE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0B8556FA2787764800497712 /* ViewController.swift */,
+				0B88348B2789FE1800BE6EEE /* StringExtension.swift */,
+				0B8834862788B04000BE6EEE /* BruteForceOperation.swift */,
+				0B8556FC2787764800497712 /* Main.storyboard */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		0B8834892789FDAE00BE6EEE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0B8556FF2787764B00497712 /* Assets.xcassets */,
+				0B8557042787764B00497712 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0B88348A2789FDB600BE6EEE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0B8556F82787764800497712 /* SceneDelegate.swift */,
+				0B8556F62787764800497712 /* AppDelegate.swift */,
+				0B8557012787764B00497712 /* LaunchScreen.storyboard */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +170,7 @@
 			files = (
 				0B8556FB2787764800497712 /* ViewController.swift in Sources */,
 				0B8556F72787764800497712 /* AppDelegate.swift in Sources */,
+				0B88348C2789FE1800BE6EEE /* StringExtension.swift in Sources */,
 				0B8834872788B04000BE6EEE /* BruteForceOperation.swift in Sources */,
 				0B8556F92787764800497712 /* SceneDelegate.swift in Sources */,
 			);
@@ -295,7 +323,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XX3V83W7QP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PasswordPicker/Info.plist;
+				INFOPLIST_FILE = PasswordPicker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -323,7 +351,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XX3V83W7QP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PasswordPicker/Info.plist;
+				INFOPLIST_FILE = PasswordPicker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
