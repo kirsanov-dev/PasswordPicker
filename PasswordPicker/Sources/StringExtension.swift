@@ -30,4 +30,20 @@ extension String {
         stringArray[index] = character
         self = String(stringArray)
     }
+    
+    /// Splits a string into substrings of given length.
+    /// - Parameter length: Length of substrings.
+    /// - Returns: Array of substrings.
+    func split(by length: Int) -> [String] {
+        var startIndex = self.startIndex
+        var results = [Substring]()
+        
+        while startIndex < self.endIndex {
+            let endIndex = self.index(startIndex, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+            results.append(self[startIndex..<endIndex])
+            startIndex = endIndex
+        }
+        
+        return results.map { String($0) }
+    }
 }

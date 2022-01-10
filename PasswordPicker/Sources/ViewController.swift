@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -19,7 +19,8 @@ class ViewController: UIViewController {
     // MARK: - Constants and variables
     let labelFontSize: CGFloat = 12
     let cornerRadius: CGFloat = 5
-    let passwordLength: Int = 3
+    let passwordLength: Int = 20
+    let splitSubstringSize = 3
     
     /// Indicates if the background color of the main view is black or white.
     var isBlack: Bool = false {
@@ -54,7 +55,7 @@ class ViewController: UIViewController {
         switchColorButton.layer.cornerRadius = cornerRadius
         switchColorButton.isHidden = true
     }
-
+    
     // MARK: - Actions
     
     /// Responsible for actions after pressing generateButton button.
@@ -69,21 +70,26 @@ class ViewController: UIViewController {
         activityIndicator.startAnimating()
         switchColorButton.isHidden = false
         let backgroundQueue = OperationQueue()
-        let bruteForceOperation = BruteForceOperation(password: textField.text ?? "")
-        let mainQueue = OperationQueue.main
-        let bruteForceCompletion = BlockOperation {
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.infoLabel.text = "Пароль \"\(self.textField.text ?? "")\" подобран. Попробуешь еще раз?"
-            self.textField.isSecureTextEntry = false
-            self.generateButton.isUserInteractionEnabled = true
-            self.generateButton.isSelected = false
-            self.generateButton.backgroundColor = .systemBlue
-            self.switchColorButton.isHidden = true
+        let password = textField.text ?? ""
+        let passwordArray = password.split(by: splitSubstringSize)
+        var operations = [BruteForceOperation]()
+        for passwordChunk in passwordArray {
+            operations.append(BruteForceOperation(password: passwordChunk))
         }
-        backgroundQueue.addOperation(bruteForceOperation)
-        bruteForceOperation.completionBlock = {
-            mainQueue.addOperation(bruteForceCompletion)
+        for operation in operations {
+            backgroundQueue.addOperation(operation)
+        }
+        backgroundQueue.addBarrierBlock {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                self.infoLabel.text = "Пароль \"\(self.textField.text ?? "")\" подобран. Попробуешь еще раз?"
+                self.textField.isSecureTextEntry = false
+                self.generateButton.isUserInteractionEnabled = true
+                self.generateButton.isSelected = false
+                self.generateButton.backgroundColor = .systemBlue
+                self.switchColorButton.isHidden = true
+            }
         }
     }
     
@@ -103,6 +109,4 @@ class ViewController: UIViewController {
         return String((0..<length).map { _ in characters.randomElement() ?? Character("") })
     }
 }
-
-
 
