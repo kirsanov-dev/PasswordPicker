@@ -38,22 +38,7 @@ class ViewController: UIViewController {
     // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
-    }
-    
-    /// Setup initial parameters of views. Must be added to the body of viewDidLoad() method.
-    func setupViews() {
-        activityIndicator.isHidden = true
-        infoLabel.font = .systemFont(ofSize: labelFontSize)
-        infoLabel.text = "Нажми, чтобы сгенерировать пароль"
-        infoLabel.textColor = .black
-        generateButton.backgroundColor = .systemBlue
-        generateButton.tintColor = .white
-        generateButton.layer.cornerRadius = cornerRadius
-        switchColorButton.backgroundColor = .systemGreen
-        switchColorButton.tintColor = .white
-        switchColorButton.layer.cornerRadius = cornerRadius
-        switchColorButton.isHidden = true
+        configureViews(state: .initial)
     }
     
     // MARK: - Actions
@@ -61,16 +46,9 @@ class ViewController: UIViewController {
     /// Responsible for actions after pressing generateButton button.
     /// - Parameter sender: Standard parameter passing the source of action to the method.
     @IBAction func generateButtonPressed(_ sender: Any) {
-        textField.isSecureTextEntry = true
-        textField.text = generatePassword(length: passwordLength)
-        infoLabel.text = "Пароль сгенерирован. Идет подбор..."
-        generateButton.isUserInteractionEnabled = false
-        generateButton.backgroundColor = .systemGray2
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        switchColorButton.isHidden = false
-        let backgroundQueue = OperationQueue()
+        configureViews(state: .isPicking)
         let password = textField.text ?? ""
+        let backgroundQueue = OperationQueue()
         let passwordArray = password.split(by: splitSubstringSize)
         var operations = [BruteForceOperation]()
         for passwordChunk in passwordArray {
@@ -80,15 +58,9 @@ class ViewController: UIViewController {
             backgroundQueue.addOperation(operation)
         }
         backgroundQueue.addBarrierBlock {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
-                self.infoLabel.text = "Пароль \"\(self.textField.text ?? "")\" подобран. Попробуешь еще раз?"
-                self.textField.isSecureTextEntry = false
-                self.generateButton.isUserInteractionEnabled = true
-                self.generateButton.isSelected = false
-                self.generateButton.backgroundColor = .systemBlue
-                self.switchColorButton.isHidden = true
+            DispatchQueue.main.async{ [weak self] in
+                guard let self = self else { return }
+                self.configureViews(state: .finished)
             }
         }
     }
@@ -98,15 +70,4 @@ class ViewController: UIViewController {
     @IBAction func changeColorPressed(_ sender: Any) {
         isBlack.toggle()
     }
-    
-    // MARK: - Methods
-    
-    /// Generates random password.
-    /// - Parameter length: Length of the password.
-    /// - Returns: String that consists of random characters in a given range.
-    func generatePassword(length: Int) -> String {
-        let characters = String().letters + String().digits
-        return String((0..<length).map { _ in characters.randomElement() ?? Character("") })
-    }
 }
-
