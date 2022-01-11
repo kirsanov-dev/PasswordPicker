@@ -46,4 +46,12 @@ extension String {
         
         return results.map { String($0) }
     }
+    
+    /// Generates random password.
+    /// - Parameter length: Length of the password.
+    /// - Returns: String that consists of random characters in a given range.
+    static func generateString(length: Int) -> String {
+        let characters = String().printable
+        return String((0..<length).compactMap { _ in characters.randomElement() })
+    }
 }
