@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B632F46278E02B600241AFF /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B632F45278E02B600241AFF /* ViewControllerExtension.swift */; };
 		0B8556F72787764800497712 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8556F62787764800497712 /* AppDelegate.swift */; };
 		0B8556F92787764800497712 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8556F82787764800497712 /* SceneDelegate.swift */; };
 		0B8556FB2787764800497712 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8556FA2787764800497712 /* ViewController.swift */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0B632F45278E02B600241AFF /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		0B8556F32787764800497712 /* PasswordPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B8556F62787764800497712 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0B8556F82787764800497712 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				0B8556FA2787764800497712 /* ViewController.swift */,
-				0B632F45278E02B600241AFF /* ViewControllerExtension.swift */,
 				0B8834862788B04000BE6EEE /* BruteForceOperation.swift */,
 				0B88348B2789FE1800BE6EEE /* StringExtension.swift */,
 				0B8556FC2787764800497712 /* Main.storyboard */,
@@ -173,7 +170,6 @@
 			files = (
 				0B8556FB2787764800497712 /* ViewController.swift in Sources */,
 				0B8556F72787764800497712 /* AppDelegate.swift in Sources */,
-				0B632F46278E02B600241AFF /* ViewControllerExtension.swift in Sources */,
 				0B88348C2789FE1800BE6EEE /* StringExtension.swift in Sources */,
 				0B8834872788B04000BE6EEE /* BruteForceOperation.swift in Sources */,
 				0B8556F92787764800497712 /* SceneDelegate.swift in Sources */,

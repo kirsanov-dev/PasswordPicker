@@ -79,7 +79,3 @@ class BruteForceOperation: Operation {
         return resultString
     }
 }
-
-
-
-
