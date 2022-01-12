@@ -22,8 +22,15 @@ class ViewController: UIViewController {
     let passwordLength: Int = 20
     let splitSubstringSize = 3
     
+    /// State of ViewController views
+    enum State {
+        case initial
+        case isPicking
+        case finished
+    }
+    
     /// Indicates if the background color of the main view is black or white.
-    var isBlack: Bool = false {
+    private var isBlack: Bool = false {
         didSet {
             if isBlack {
                 self.view.backgroundColor = .black
@@ -42,7 +49,6 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
     /// Responsible for actions after pressing generateButton button.
     /// - Parameter sender: Standard parameter passing the source of action to the method.
     @IBAction func generateButtonPressed(_ sender: Any) {
@@ -57,9 +63,8 @@ class ViewController: UIViewController {
         for operation in operations {
             backgroundQueue.addOperation(operation)
         }
-        backgroundQueue.addBarrierBlock {
-            DispatchQueue.main.async{ [weak self] in
-                guard let self = self else { return }
+        backgroundQueue.addBarrierBlock { [unowned self] in
+            DispatchQueue.main.async{
                 self.configureViews(state: .finished)
             }
         }
@@ -69,5 +74,42 @@ class ViewController: UIViewController {
     /// - Parameter sender: Standard parameter passing the source of action to the method.
     @IBAction func changeColorPressed(_ sender: Any) {
         isBlack.toggle()
+    }
+    
+    // MARK: - Methods
+    /// Configures the views depending on its state
+    func configureViews(state: State) {
+        switch state {
+        case .initial:
+            activityIndicator.isHidden = true
+            infoLabel.font = .systemFont(ofSize: labelFontSize)
+            textField.font = .systemFont(ofSize: labelFontSize)
+            infoLabel.text = "Нажми, чтобы сгенерировать пароль"
+            generateButton.backgroundColor = .systemBlue
+            generateButton.tintColor = .white
+            generateButton.layer.cornerRadius = cornerRadius
+            switchColorButton.backgroundColor = .systemGreen
+            switchColorButton.tintColor = .white
+            switchColorButton.layer.cornerRadius = cornerRadius
+            switchColorButton.isHidden = true
+        case .isPicking:
+            textField.isSecureTextEntry = true
+            textField.text = String.generateString(length: passwordLength)
+            infoLabel.text = "Пароль сгенерирован. Идет подбор..."
+            generateButton.isUserInteractionEnabled = false
+            generateButton.backgroundColor = .systemGray2
+            activityIndicator.isHidden = false
+            activityIndicator.startAnimating()
+            switchColorButton.isHidden = false
+        case .finished:
+            activityIndicator.stopAnimating()
+            activityIndicator.isHidden = true
+            infoLabel.text = "Пароль \"\(self.textField.text ?? "")\" подобран. Попробуешь еще раз?"
+            textField.isSecureTextEntry = false
+            generateButton.isUserInteractionEnabled = true
+            generateButton.isSelected = false
+            generateButton.backgroundColor = .systemBlue
+            switchColorButton.isHidden = true
+        }
     }
 }
